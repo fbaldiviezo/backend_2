@@ -25,6 +25,11 @@ public class MenuController {
         return service.get();
     }
 
+    @GetMapping("/filter/{state}")
+    public List<MenuModel> getMenusByState(@PathVariable Integer state) {
+        return service.getByState(state);
+    }
+
     @GetMapping("/{codr}")
     public List<MenuDto> getMenusRol(@PathVariable Integer codr) {
         return service.getMenusRol(codr);

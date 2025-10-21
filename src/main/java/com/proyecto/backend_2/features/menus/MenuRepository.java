@@ -22,4 +22,7 @@ public interface MenuRepository extends JpaRepository<MenuModel, Integer> {
     @Query(value = "select p.nombre as nombre,p.ayuda as ayuda, p.enlace as enlace from procesos p"
             + " join mepro mp on mp.codp = p.codp where mp.codm = :xcodm", nativeQuery = true)
     List<ProcessDto> getProcesosMenu(@Param("xcodm") Integer xcodm);
+
+    @Query(value = "select * from menus where estado = :state;", nativeQuery = true)
+    List<MenuModel> getByState(@Param("state") Integer state);
 }

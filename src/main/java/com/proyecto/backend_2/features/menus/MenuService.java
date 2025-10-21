@@ -19,6 +19,13 @@ public class MenuService {
         return repository.findAll();
     }
 
+    public List<MenuModel> getByState(Integer estado) {
+        if (estado == 2) {
+            return repository.findAll();
+        }
+        return repository.getByState(estado);
+    }
+
     public MenuModel post(MenuModel post) {
         return repository.save(post);
     }

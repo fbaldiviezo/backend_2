@@ -55,12 +55,7 @@ public class AuthService {
                                 .build();
         }
 
-        // no seguro xd (tengo miedo)
         public AuthResponse changePassword(ChangePasswordRequest request) {
-                authenticationManager
-                                .authenticate(new UsernamePasswordAuthenticationToken(request.getLogin(),
-                                                request.getOldPassword()));
-
                 UserModel user = repository.findByLogin(request.getLogin())
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
                 user.setPassword(passwordEncoder.encode(request.getNewPassword()));
