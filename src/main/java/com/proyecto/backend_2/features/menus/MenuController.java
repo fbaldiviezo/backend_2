@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.proyecto.backend_2.dtos.MenuDto;
+import com.proyecto.backend_2.dtos.MenusByRoleDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,6 +35,18 @@ public class MenuController {
     public List<MenuDto> getMenusRol(@PathVariable Integer codr) {
         return service.getMenusRol(codr);
     }
+
+    // extrae los menus segun el rol de usario
+    @GetMapping("/filter/{state}/{codr}")
+    public List<MenusByRoleDto> getFilteredMenus(@PathVariable Integer state, @PathVariable Integer codr) {
+        return service.filterMenus(state, codr);
+    }
+
+    @GetMapping("/filter/role/{codr}")
+    public List<MenusByRoleDto> getMenusByRole(@PathVariable Integer codr) {
+        return service.filterMenusByRoles(codr);
+    }
+    // extrae los menus segun el rol de usario
 
     @PostMapping
     public MenuModel saveMenu(@RequestBody MenuModel menu) {

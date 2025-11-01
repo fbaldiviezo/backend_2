@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.proyecto.backend_2.dtos.RolesByUsersDto;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -27,6 +29,18 @@ public class RolController {
     public List<RolModel> getRolesByState(@PathVariable Integer state) {
         return service.getByState(state);
     }
+
+    // extrae los roles segun el usuario seleccionado
+    @GetMapping("/filter/{state}/{login}")
+    public List<RolesByUsersDto> getFilteredRoles(@PathVariable Integer state, @PathVariable String login) {
+        return service.filterRoles(state, login);
+    }
+
+    @GetMapping("/filter/user/{login}")
+    public List<RolesByUsersDto> getRolesByUser(@PathVariable String login) {
+        return service.filterRolesByUsers(login);
+    }
+    // extrae los roles segun el usuario seleccionado
 
     @PostMapping
     public RolModel saveRole(@RequestBody RolModel role) {

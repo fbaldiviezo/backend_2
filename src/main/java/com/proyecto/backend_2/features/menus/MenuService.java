@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.backend_2.dtos.MenuDto;
+import com.proyecto.backend_2.dtos.MenusByRoleDto;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +48,20 @@ public class MenuService {
             menuRol.add(new MenuDto(x.getCodm(), x.getNombre(), repository.getProcesosMenu(x.getCodm())));
         }
         return menuRol;
+    }
+
+    // obtener menus segun los roles
+    public List<MenusByRoleDto> filterMenus(Integer state, Integer codr) {
+        if (state == 2) {
+            return repository.getAsignedMenus(codr);
+        }
+        if (state == 3) {
+            return repository.getUnsignedMenus(codr);
+        }
+        return repository.getMenusByRoles(codr);
+    }
+
+    public List<MenusByRoleDto> filterMenusByRoles(Integer codr) {
+        return repository.getMenusByRoles(codr);
     }
 }

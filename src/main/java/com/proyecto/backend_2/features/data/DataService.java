@@ -3,6 +3,8 @@ package com.proyecto.backend_2.features.data;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.backend_2.dtos.DataRequest;
+import com.proyecto.backend_2.features.data.repositories.DataRepository;
+import com.proyecto.backend_2.features.data.repositories.DataRepository2;
 import com.proyecto.backend_2.features.personals.PersonalModel;
 import com.proyecto.backend_2.features.personals.PersonalRepository;
 import com.proyecto.backend_2.ids.DataId;
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DataService {
     private final DataRepository repository;
+    private final DataRepository2 repository2;
     private final PersonalRepository personalRepository;
 
     @Transactional
@@ -27,7 +30,12 @@ public class DataService {
     }
 
     @Transactional
-    public void updateCedula(Integer codp, String cedula) {
-        repository.updateCedula(codp, cedula);
+    public void update(Integer codp, String oldCedula, String newCedula) {
+        DataId id = new DataId(codp, oldCedula);
+        if (repository.existsById(id)) {
+            repository2.updateCedula(codp, newCedula);
+        } else {
+            throw new EntityNotFoundException("No existe la clave buscada");
+        }
     }
 }

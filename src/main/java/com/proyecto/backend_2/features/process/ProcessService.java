@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import jakarta.transaction.Transactional;
+import com.proyecto.backend_2.dtos.ProcessByMenuDto;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -16,24 +17,17 @@ public class ProcessService {
         return repository.findAll();
     }
 
-    public List<ProcessModel> getByState(Integer estado) {
-        if (estado == 2) {
-            return repository.findAll();
+    public List<ProcessByMenuDto> filterProcess(Integer state, Integer codm) {
+        if (state == 2) {
+            return repository.getAsignedProcess(codm);
         }
-        return repository.getByState(estado);
+        if (state == 3) {
+            return repository.getUnsignedProcess(codm);
+        }
+        return repository.getProcessByMenu(codm);
     }
 
-    public ProcessModel post(ProcessModel post) {
-        return repository.save(post);
-    }
-
-    public ProcessModel put(Integer id, ProcessModel put) {
-        put.setCodp(id);
-        return repository.save(put);
-    }
-
-    @Transactional
-    public void changeState(Integer id, Integer state) {
-        repository.changeState(id, state);
+    public List<ProcessByMenuDto> filterProcessBySelectedMenu(Integer codm) {
+        return repository.getProcessByMenu(codm);
     }
 }

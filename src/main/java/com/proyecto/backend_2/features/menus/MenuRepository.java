@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.proyecto.backend_2.dtos.MenusByRoleDto;
 import com.proyecto.backend_2.dtos.ProcessDto;
 
 public interface MenuRepository extends JpaRepository<MenuModel, Integer> {
@@ -25,4 +26,24 @@ public interface MenuRepository extends JpaRepository<MenuModel, Integer> {
 
     @Query(value = "select * from menus where estado = :state;", nativeQuery = true)
     List<MenuModel> getByState(@Param("state") Integer state);
+
+    // traer los menus respecto a los roles
+    @Query(value = "SELECT m.codm, m.nombre, m.estado, TRUE AS relacionMenu FROM menus m INNER JOIN rolme r ON m.codm = r.codm WHERE r.codr = :codr;", nativeQuery = true)
+    List<MenusByRoleDto> getAsignedMenus(@Param("codr") Integer codr);
+
+    @Query(value = "SELECT m.codm, m.nombre, m.estado, False as relacionMenu FROM menus m WHERE m.codm NOT IN ( SELECT codm FROM rolme WHERE codr = :codr );", nativeQuery = true)
+    List<MenusByRoleDto> getUnsignedMenus(@Param("codr") Integer codr);
+
+    @Query(value = "SELECT m.codm, m.nombre, m.estado,\n" + //
+            "    CASE\n" + //
+            "        WHEN r.codm IS NULL THEN FALSE\n" + //
+            "        ELSE TRUE\n" + //
+            "    END AS no_relacionado_con_menu\n" + //
+            "FROM\n" + //
+            "    menus m\n" + //
+            "LEFT JOIN\n" + //
+            "    rolme r ON m.codm = r.codm AND r.codr = :codr\n" + //
+            "WHERE\n" + //
+            "    m.codm = m.codm", nativeQuery = true)
+    List<MenusByRoleDto> getMenusByRoles(@Param("codr") Integer codr);
 }

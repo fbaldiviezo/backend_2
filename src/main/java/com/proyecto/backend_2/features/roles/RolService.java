@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.proyecto.backend_2.dtos.RolesByUsersDto;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -35,5 +37,20 @@ public class RolService {
     @Transactional
     public void changeState(Integer id, Integer state) {
         repository.changeState(id, state);
+    }
+
+    // obtener roles segun el usuario
+    public List<RolesByUsersDto> filterRoles(Integer state, String login) {
+        if (state == 2) {
+            return repository.getAsignedRoles(login);
+        }
+        if (state == 3) {
+            return repository.getUnsignedRoles(login);
+        }
+        return repository.getRolesByUser(login);
+    }
+
+    public List<RolesByUsersDto> filterRolesByUsers(String login) {
+        return repository.getRolesByUser(login);
     }
 }

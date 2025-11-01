@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.proyecto.backend_2.dtos.PersonalInfoUserDto;
+
 @Repository
 public interface PersonalRepository extends JpaRepository<PersonalModel, Integer> {
     @Modifying
@@ -26,4 +28,10 @@ public interface PersonalRepository extends JpaRepository<PersonalModel, Integer
 
     @Query(value = "select * from personal where tipo = :tipo and estado = :estado", nativeQuery = true)
     List<PersonalModel> getByFilter(@Param("tipo") String tipo, @Param("estado") Integer estado);
+
+    // traer solo la persona (codp, nombre, login, estado)
+    @Query(value = "SELECT p.codp, p.nombre || ' ' || p.ap || ' ' || p.am as nombre, u.login, u.estado\n" + //
+            "FROM personal p, usuarios u\n" + //
+            "WHERE p.codp = u.codp", nativeQuery = true)
+    List<PersonalInfoUserDto> getPersonalInfo();
 }

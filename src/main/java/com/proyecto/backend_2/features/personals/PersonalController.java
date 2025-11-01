@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.proyecto.backend_2.dtos.PersonalInfoUserDto;
 import com.proyecto.backend_2.dtos.PersonalRequestDto;
+import com.proyecto.backend_2.dtos.UpdatePersonalRequestDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,13 +34,18 @@ public class PersonalController {
         return service.getPersonalByFilter(tipo, estado);
     }
 
+    @GetMapping("/info")
+    public List<PersonalInfoUserDto> getInfoPersonal() {
+        return service.getPersonalInfoUser();
+    }
+
     @PostMapping
     public PersonalModel savePersonal(@RequestBody PersonalRequestDto request) {
         return service.post(request);
     }
 
     @PutMapping("/{id}")
-    public PersonalModel updatePersonal(@RequestBody PersonalModel request, @PathVariable int id) {
+    public PersonalModel updatePersonal(@RequestBody UpdatePersonalRequestDto request, @PathVariable int id) {
         return service.put(request, id);
     }
 

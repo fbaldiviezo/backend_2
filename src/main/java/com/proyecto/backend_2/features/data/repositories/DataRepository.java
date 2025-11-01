@@ -1,10 +1,11 @@
-package com.proyecto.backend_2.features.data;
+package com.proyecto.backend_2.features.data.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.proyecto.backend_2.features.data.DataModel;
 import com.proyecto.backend_2.ids.DataId;
 
 import jakarta.transaction.Transactional;
